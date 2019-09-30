@@ -1,0 +1,130 @@
+<LinearLayout android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="16dp"
+
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView
+        android:textAlignment="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quan ly nhan vien"
+        android:background="#42A342"
+        android:textSize="25sp">
+    </TextView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_weight="3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ma NV:">
+
+        </TextView>
+        <EditText
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edtManv">
+        </EditText>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_weight="3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ten NV:">
+
+        </TextView>
+        <EditText
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edtTennv">
+        </EditText>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_weight="3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Gioi tinh:">
+
+        </TextView>
+        <RadioGroup
+            android:id="@+id/rdGenderGroup"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nam"
+                android:id="@+id/rdNam">
+
+            </RadioButton>
+            <RadioButton
+                android:layout_marginLeft="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nu"
+                android:id="@+id/rdNu">
+
+            </RadioButton>
+        </RadioGroup>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    <TextView
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Danh sach nhan vien"
+        android:background="#42A342"
+        android:textSize="25sp">
+
+    </TextView>
+        <Button
+            android:layout_weight="8"
+            android:text="X"
+            android:textColor="#FF0909"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/btnDeleAll">
+
+        </Button>
+    </LinearLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nhap nhan vien"
+        android:textAlignment="center"
+        android:id="@+id/btnNhapnv">
+
+    </Button>
+    <ListView
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/livNhanVien">
+
+    </ListView>
+
+
+
+</LinearLayout>
