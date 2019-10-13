@@ -102,7 +102,6 @@
             android:layout_weight="8"
             android:text="X"
             android:textColor="#FF0909"
-
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/btnDeleAll">
@@ -118,6 +117,8 @@
 
     </Button>
     <ListView
+
+        android:descendantFocusability="blocksDescendants"
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -5,9 +5,9 @@ import java.io.Serializable;
 public class NhanVien implements Serializable {
     private String id;
     private String name;
-    private boolean gender;
+    private int gender;
 
-    public NhanVien(String id, String name, boolean gender) {
+    public NhanVien(String id, String name, int gender) {
         this.id = id;
         this.name = name;
         this.gender = gender;
@@ -32,11 +32,11 @@ public class NhanVien implements Serializable {
         this.name = name;
     }
 
-    public boolean isGender() {
+    public int getGender() {
         return gender;
     }
 
-    public void setGender(boolean gender) {
+    public void setGender(int gender) {
         this.gender = gender;
     }
 

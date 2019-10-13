@@ -27,7 +27,7 @@ public class ThongTinCT extends AppCompatActivity {
 
         txtid.setText(nhanVien.getId());
         txtname.setText(nhanVien.getName());
-        if (nhanVien.isGender()) {
+        if (nhanVien.getGender()==1) {
             txtgt.setText("Nam");
         } else
             txtgt.setText("Nu");

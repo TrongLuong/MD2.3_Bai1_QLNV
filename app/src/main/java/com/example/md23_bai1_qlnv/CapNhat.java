@@ -36,7 +36,7 @@ public class CapNhat extends AppCompatActivity {
 
         id.setText(nhanVien1.getId());
         ten.setText(nhanVien1.getName());
-        if (nhanVien1.isGender()){
+        if (nhanVien1.getGender()==1){
             radioButtonNam.isChecked();
         }else {
             radioButtonNu.isChecked();
@@ -48,10 +48,16 @@ public class CapNhat extends AppCompatActivity {
                 if (radioGroupcn.getCheckedRadioButtonId() == R.id.rdNucn) {
                     g = false;
                 }
+                int gt =1;
+                if(g ==true){
+                    gt = 1;
+                }else {
+                    gt =0;
+                }
                 //gui du lieu ve main
                 Bundle bundle1 = new Bundle();
                 Intent intent1 = new Intent();
-                NhanVien nhanVien1 = new NhanVien(id.getText().toString(),ten.getText().toString(),g);
+                NhanVien nhanVien1 = new NhanVien(id.getText().toString(),ten.getText().toString(),gt);
                 bundle1.putSerializable("nv1",nhanVien1);
                 intent1.putExtra("objnv1",bundle1);
                 setResult(1000,intent1);

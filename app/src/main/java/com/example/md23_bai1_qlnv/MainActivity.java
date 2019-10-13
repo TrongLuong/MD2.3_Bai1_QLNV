@@ -21,11 +21,14 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
+    DataNhanVien dbNhanVien = new DataNhanVien(this);
     CustomAdapter customAdapter;
-    ArrayList<NhanVien> arrayListNV;
+    List<NhanVien> arrayListNV;
+
+
     private ListView listViewNV;
     private int selectposition;
     private CheckBox checkBoxDele;
@@ -50,15 +53,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         anhxa();
-        arrayListNV = new ArrayList<>();
-        arrayListNV.add(new NhanVien("1", "Trong", true));
-        arrayListNV.add(new NhanVien("2", "Trong", false));
-        arrayListNV.add(new NhanVien("3", "Trong", true));
-        arrayListNV.add(new NhanVien("4", "Trong", false));
-        arrayListNV.add(new NhanVien("5", "Trong", false));
-        customAdapter = new CustomAdapter(this, R.layout.custom_adapter_liv, arrayListNV);
-        listViewNV.setAdapter(customAdapter);
-        registerForContextMenu(listViewNV);
+        dbNhanVien.addNhanVien(new NhanVien("1", "Trọng", 1));
+        dbNhanVien.addNhanVien(new NhanVien("2", "Trinh", 0));
+        dbNhanVien.addNhanVien(new NhanVien("3", "Trắng", 0));
+        dbNhanVien.addNhanVien(new NhanVien("4", "Trong", 1));
+        dbNhanVien.addNhanVien(new NhanVien("5", "Trẻ", 0));
+        arrayListNV = dbNhanVien.getAllNhanVie();
+        setCustomAdapter();
+
+
         listViewNV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -70,6 +73,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 nhapNV();
+                arrayListNV.clear();
+                //Load lại dữ liệu đã thay đổi
+                arrayListNV.addAll(dbNhanVien.getAllNhanVie());
+                //hiện lên livView
+                setCustomAdapter();
+
 
             }
         });
@@ -77,110 +86,120 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 xoaNV();
-                if(!checkBoxDele.isChecked()){
-                    Toast.makeText(MainActivity.this, "Chon nhan vien muon xoa!", Toast.LENGTH_SHORT).show();
-                }
+                arrayListNV.clear();
+                //Load lại dữ liệu đã thay đổi
+                arrayListNV.addAll(dbNhanVien.getAllNhanVie());
+                //hiện lên livView
+                setCustomAdapter();
+
             }
         });
 
+    }
 
-
-
-
-
-
+    public void setCustomAdapter() {
+        if (customAdapter == null) {
+            customAdapter = new CustomAdapter(this, R.layout.custom_adapter_liv, arrayListNV);
+            listViewNV.setAdapter(customAdapter);
+        } else {
+            customAdapter.notifyDataSetChanged();
+            listViewNV.setSelection(customAdapter.getCount());
+        }
 
     }
 
     public void nhapNV() {
-        String i = editTextID.getText().toString();
-        String t = editTextTen.getText().toString();
-        boolean g = true;
-        if (radioGroupGender.getCheckedRadioButtonId() == R.id.rdNu) {
-            g = false;
+
+        String ktraid = editTextID.getText().toString();
+        String i ="";
+        if(ktraid.trim().length()==0){
+            Toast.makeText(this, "Mã NV là bắt buộc nhập!",Toast.LENGTH_SHORT).show();
         }
-        NhanVien nv = new NhanVien(i, t, g);
-        arrayListNV.add(nv);
+        else {
+              i = editTextID.getText().toString();
+        }
+        String t = editTextTen.getText().toString();
+        int gt = 1;//gt = 1 /Nam
+        boolean g = true; //Nam
+        if (radioGroupGender.getCheckedRadioButtonId() == R.id.rdNu) {
+            g = false;//Nu
+        }
+        if (g == false) {
+            gt = 0;//Nu
+
+        } else {
+            gt = 1;//Nam
+        }
+        NhanVien nv = new NhanVien(i, t, gt);
+        dbNhanVien.addNhanVien(nv);
+        setCustomAdapter();
         customAdapter.notifyDataSetChanged();
         editTextID.setText("");
         editTextTen.setText("");
-        editTextID.requestFocus();
+        //editTextID.requestFocus();
     }
 
     public void xoaNV() {
         for (int i = listViewNV.getChildCount() - 1; i >= 0; i--) {
-           View v = listViewNV.getChildAt(i);
-           checkBoxDele = v.findViewById(R.id.cbDeleItem);
+            View v = listViewNV.getChildAt(i);
+            checkBoxDele = v.findViewById(R.id.cbDeleItem);
             if (checkBoxDele.isChecked()) {
+                String idd = arrayListNV.get(i).getId();
+                String ht = arrayListNV.get(i).getName();
+                int gtt = arrayListNV.get(i).getGender();
+                NhanVien nv = new NhanVien(idd, ht, gtt);
+                dbNhanVien.deleteNhanVien(nv);
                 arrayListNV.remove(i);
-                Toast.makeText(MainActivity.this, "Xoa thanh cong!", Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(MainActivity.this, "Xóa Thành Công!", Toast.LENGTH_SHORT).show();
             }
 
             customAdapter.notifyDataSetChanged();
         }
     }
-//menu tren header
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_context,menu);
-        return super.onCreateOptionsMenu(menu);
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.itXemCT:
-
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-//menu khi nhan su kien onLongClick tren liv
+    //menu khi nhan su kien onLongClick tren liv
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        getMenuInflater().inflate(R.menu.menu_context,menu);
+        getMenuInflater().inflate(R.menu.menu_context, menu);
         menu.setHeaderTitle("Chọn công việc!");
         super.onCreateContextMenu(menu, v, menuInfo);
     }
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()){
-                case R.id.itXemCT:
-                    Intent intent = new Intent(MainActivity.this, ThongTinCT.class);
-                    NhanVien nhanVien = arrayListNV.get(selectposition);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("nv",nhanVien);
-                    intent.putExtra("objnv",bundle);
-                    //mo acti
-                    startActivity(intent);
+        switch (item.getItemId()) {
+            case R.id.itXemCT:
+                Intent intent = new Intent(MainActivity.this, ThongTinCT.class);
+                NhanVien nhanVien = arrayListNV.get(selectposition);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("nv", nhanVien);
+                intent.putExtra("objnv", bundle);
+                //mo acti
+                startActivity(intent);
 
-                    break;
-                case  R.id.itCapNhat:
-                    Intent intent1 = new Intent(MainActivity.this,CapNhat.class);
-                    NhanVien nhanVien1 = arrayListNV.get(selectposition);
-                    Bundle bundle1 = new Bundle();
-                    bundle1.putSerializable("nv1",nhanVien1);
-                    intent1.putExtra("objnv1",bundle1);
-                    //mo acti
-                    startActivityForResult(intent1,1000);
-                    break;
-            }
+                break;
+            case R.id.itCapNhat:
+                Intent intent1 = new Intent(MainActivity.this, CapNhat.class);
+                NhanVien nhanVien1 = arrayListNV.get(selectposition);
+                Bundle bundle1 = new Bundle();
+                bundle1.putSerializable("nv1", nhanVien1);
+                intent1.putExtra("objnv1", bundle1);
+                //mo acti
+                startActivityForResult(intent1, 1000);
+                break;
+        }
         return super.onContextItemSelected(item);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==1000){
+        if (resultCode == 1000) {
             Bundle bundle = data.getBundleExtra("objnv1");
             NhanVien nhanVien = (NhanVien) bundle.getSerializable("nv1");
             arrayListNV.get(selectposition).setId(nhanVien.getId());
             arrayListNV.get(selectposition).setName(nhanVien.getName());
             listViewNV.setAdapter(customAdapter);
-
-
 
 
         }
