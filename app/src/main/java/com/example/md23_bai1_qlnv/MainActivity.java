@@ -53,13 +53,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         anhxa();
-        dbNhanVien.addNhanVien(new NhanVien("1", "Trọng", 1));
-        dbNhanVien.addNhanVien(new NhanVien("2", "Trinh", 0));
-        dbNhanVien.addNhanVien(new NhanVien("3", "Trắng", 0));
-        dbNhanVien.addNhanVien(new NhanVien("4", "Trong", 1));
-        dbNhanVien.addNhanVien(new NhanVien("5", "Trẻ", 0));
+//        dbNhanVien.addNhanVien(new NhanVien("1", "Trọng", 1));
+//        dbNhanVien.addNhanVien(new NhanVien("2", "Trinh", 0));
+//        dbNhanVien.addNhanVien(new NhanVien("3", "Trắng", 0));
+//        dbNhanVien.addNhanVien(new NhanVien("4", "Trong", 1));
+//        dbNhanVien.addNhanVien(new NhanVien("5", "Trẻ", 0));
+        registerForContextMenu(listViewNV);
         arrayListNV = dbNhanVien.getAllNhanVie();
         setCustomAdapter();
+
 
 
         listViewNV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -76,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 arrayListNV.clear();
                 //Load lại dữ liệu đã thay đổi
                 arrayListNV.addAll(dbNhanVien.getAllNhanVie());
+
                 //hiện lên livView
                 setCustomAdapter();
 
@@ -109,15 +112,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void nhapNV() {
-
+//        String ktraid = editTextID.getText().toString();
+//        NhanVien nvkt = dbNhanVien.getNhanVienID(ktraid);
+//        if(nvkt != null){
+//            if(ktraid.trim().length()==0){
+//                Toast.makeText(this, "Mã NV là bắt buộc nhập!",Toast.LENGTH_SHORT).show();
+//            }
+//             if(nvkt.getId()==editTextID.getText().toString()){
+//                Toast.makeText(this, "Trùng MSNV, Nhân viên đã tồn tại!",Toast.LENGTH_SHORT).show();
+//            }
+//        }
+        String idt ="";
         String ktraid = editTextID.getText().toString();
-        String i ="";
         if(ktraid.trim().length()==0){
-            Toast.makeText(this, "Mã NV là bắt buộc nhập!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Mã NV là bắt buộc nhập!",Toast.LENGTH_SHORT).show();
+        }else {
+            idt = editTextID.getText().toString();
         }
-        else {
-              i = editTextID.getText().toString();
-        }
+
+
+
         String t = editTextTen.getText().toString();
         int gt = 1;//gt = 1 /Nam
         boolean g = true; //Nam
@@ -130,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             gt = 1;//Nam
         }
-        NhanVien nv = new NhanVien(i, t, gt);
+        NhanVien nv = new NhanVien(idt, t, gt);
         dbNhanVien.addNhanVien(nv);
         setCustomAdapter();
         customAdapter.notifyDataSetChanged();
@@ -199,7 +213,9 @@ public class MainActivity extends AppCompatActivity {
             NhanVien nhanVien = (NhanVien) bundle.getSerializable("nv1");
             arrayListNV.get(selectposition).setId(nhanVien.getId());
             arrayListNV.get(selectposition).setName(nhanVien.getName());
+            arrayListNV.get(selectposition).setGender(nhanVien.getGender());
             listViewNV.setAdapter(customAdapter);
+            customAdapter.notifyDataSetChanged();
 
 
         }

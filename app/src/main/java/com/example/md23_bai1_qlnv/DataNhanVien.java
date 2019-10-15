@@ -73,7 +73,8 @@ public class DataNhanVien  extends SQLiteOpenHelper {
         return db.update(TABLE_NAME, values,ID+ "=?", new String[]{String.valueOf(nv.getId())});
     }
     //search nv by id
-    public NhanVien getNhanVienID(int id){
+
+    public NhanVien getNhanVienID(String id){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_NAME,new String[]{ID,NAME,GT},ID + "=?",
                 new String[]{String.valueOf(id)},null,null,null,null);

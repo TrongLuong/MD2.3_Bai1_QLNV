@@ -15,12 +15,14 @@ public class CapNhat extends AppCompatActivity {
     RadioGroup radioGroupcn;
     Button buttonLuu;
     RadioButton radioButtonNam, radioButtonNu;
+    DataNhanVien dataNhanVien;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cap_nhat);
+        dataNhanVien = new DataNhanVien(this);
         id =findViewById(R.id.edtManvcn);
         ten = findViewById(R.id.edtTennvcn);
         radioGroupcn = findViewById(R.id.rdGenderGroupcn);
@@ -36,6 +38,7 @@ public class CapNhat extends AppCompatActivity {
 
         id.setText(nhanVien1.getId());
         ten.setText(nhanVien1.getName());
+
         if (nhanVien1.getGender()==1){
             radioButtonNam.isChecked();
         }else {
@@ -44,11 +47,14 @@ public class CapNhat extends AppCompatActivity {
         buttonLuu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean g = true;
+                int gt ; ;
+                boolean g;
                 if (radioGroupcn.getCheckedRadioButtonId() == R.id.rdNucn) {
-                    g = false;
-                }
-                int gt =1;
+                  g = false;
+                  }else { g = true;
+                };
+
+
                 if(g ==true){
                     gt = 1;
                 }else {
@@ -58,6 +64,7 @@ public class CapNhat extends AppCompatActivity {
                 Bundle bundle1 = new Bundle();
                 Intent intent1 = new Intent();
                 NhanVien nhanVien1 = new NhanVien(id.getText().toString(),ten.getText().toString(),gt);
+                dataNhanVien.updateNhanVien(nhanVien1);
                 bundle1.putSerializable("nv1",nhanVien1);
                 intent1.putExtra("objnv1",bundle1);
                 setResult(1000,intent1);

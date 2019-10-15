@@ -37,12 +37,14 @@ public class CustomAdapter extends ArrayAdapter {
         ImageView imageIcon = convertView.findViewById(R.id.imageIconItem);
         TextView textViewID = convertView.findViewById(R.id.txtManvItem);
         TextView textViewTen = convertView.findViewById(R.id.txtTennvItem);
+
         nv = arrayListNV.get(position);
         if(nv.getGender()==1){
             imageIcon.setImageResource(R.drawable.personel);
         }else {
             imageIcon.setImageResource(R.drawable.woman);
         }
+
         textViewID.setText(nv.getId());
         textViewTen.setText(nv.getName());
         return convertView;
