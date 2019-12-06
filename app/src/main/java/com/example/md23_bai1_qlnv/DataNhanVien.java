@@ -5,12 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
+
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 
-import java.net.ContentHandler;
+
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class DataNhanVien  extends SQLiteOpenHelper {
 
     private Context context;
 
-    public DataNhanVien(@Nullable Context context) {
+    public DataNhanVien(  Context context) {
         super(context, DATABASE_NAME, null, 1);
         this.context = context;
     }
@@ -52,7 +52,6 @@ public class DataNhanVien  extends SQLiteOpenHelper {
         values.put(ID, nv.getId());
         values.put(NAME, nv.getName());
         values.put(GT,nv.getGender());
-
         db.insert(TABLE_NAME,null,values);
         db.close();
     }
@@ -72,17 +71,8 @@ public class DataNhanVien  extends SQLiteOpenHelper {
         values.put(GT, nv.getGender());
         return db.update(TABLE_NAME, values,ID+ "=?", new String[]{String.valueOf(nv.getId())});
     }
-    //search nv by id
 
-    public NhanVien getNhanVienID(String id){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_NAME,new String[]{ID,NAME,GT},ID + "=?",
-                new String[]{String.valueOf(id)},null,null,null,null);
-        NhanVien nv = new NhanVien(cursor.getString(0),cursor.getString(1),cursor.getInt(2));
-        cursor.close();
-        db.close();
-        return nv;
-    }
+
     // lay tat ca nhan vien
     public List<NhanVien> getAllNhanVie() {
         List<NhanVien> nhanVienList = new ArrayList<>();

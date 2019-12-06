@@ -4,9 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentProvider;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
 import android.icu.util.Calendar;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -61,8 +66,6 @@ public class MainActivity extends AppCompatActivity {
         registerForContextMenu(listViewNV);
         arrayListNV = dbNhanVien.getAllNhanVie();
         setCustomAdapter();
-
-
 
         listViewNV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
